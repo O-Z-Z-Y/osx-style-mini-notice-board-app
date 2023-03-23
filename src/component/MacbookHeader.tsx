@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+import { ReactComponent as AppleLogoIcon } from './../assets/svg/apple.svg'
+import { ReactComponent as BatteryIcon} from './../assets/svg/battery-charging.svg'
+import { ReactComponent as SearchIcon} from './../assets/svg/search.svg'
+import { ReactComponent as WifiIcon} from './../assets/svg/wifi-off.svg'
 
 const Container = styled.div`
   height: 25px;
@@ -7,8 +11,8 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
-  background-color: #151515;
+  color: rgba(255,255,255,0.9);
+  background-color: rgba(0,0,0,0.5);
 
   .nav-finder {
     font-weight: 600;
@@ -24,13 +28,25 @@ const Container = styled.div`
     }
   }
   
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    div {
+      padding: 0 8px;
+      svg {
+        padding-top: 5px;
+      }
+    }
+  }
 `
 
 const MacbookHeader: React.FC = () => {
   return (
     <Container>
       <div className="navbar-left">
-        <div className="logo-wrapper">로고</div>
+        <div className="logo-wrapper">
+          <AppleLogoIcon />
+        </div>
         <div className="nav-finder">Finder</div>
         <div className="nav-file">File</div>
         <div className="nav-edit">Edit</div>
@@ -38,15 +54,20 @@ const MacbookHeader: React.FC = () => {
         <div className="nav-go">Go</div>
         <div className="nav-window">Windows</div>
         <div className="nav-help">Help</div>
+        <div className="noway">응 어짜피 안돼</div>
       </div>
       <div className="navbar-right">
-        <div className="macbook-wifi">wifi</div>
-        <div className="macbook-remote">remote</div>
-        <div className="macbook-battery">battery</div>
-        <div className="macbook-time">time</div>
-        <div className="macbook-search">search</div>
+        <div className="macbook-battery">
+          <BatteryIcon />
+        </div>
+        <div className="macbook-wifi">
+          <WifiIcon />
+        </div>
+        <div className="macbook-search">
+          <SearchIcon />
+        </div>
         <div className="macbook-siri">siri</div>
-        <div className="macbook-sidebar">sidebar</div>
+        <div className="macbook-time">[현재 시간]</div>
       </div>
     </Container>
   )

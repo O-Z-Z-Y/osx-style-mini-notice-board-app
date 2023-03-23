@@ -15,6 +15,17 @@ const Container = styled.div`
   .content-wrapper {
     background-color: white;
     border-radius: 0.375rem;
+    padding: 0 10px;
+  }
+
+  .content-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .content-text {
+    padding-bottom: 15px;
   }
 `
 
@@ -41,9 +52,11 @@ const BoardContent: React.FC = () => {
         {contents.map((content) => (
           <div className="content-wrapper bg-white rounded-md shadow-md hover:shadow-lg ease-linear duration-100">
             <div className="p-4 m-4">
-              <h2 className="text-lg font-semibold mb-2">{content.subject}</h2>
-              <p className="text-gray-500 text-sm mb-2">{content.username} | {content.date}</p>
-              <p className="text-gray-600">{content.text}</p>
+              <div className="content-title-wrapper">
+                <h2 className="text-lg font-semibold mb-2">{content.subject}</h2>
+                <p className="text-gray-500 text-sm mb-2">{content.username} | {content.date}</p>
+              </div>
+              <p className="content-text">{content.text}</p>
             </div>
           </div>
         ))}
