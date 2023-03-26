@@ -4,12 +4,12 @@ import styled from "styled-components";
 
 const Container = styled.div<{ mounted: boolean }>`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 25px);
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0;
+  top: 25px;
   left: 0;
   z-index: 11;
 `;

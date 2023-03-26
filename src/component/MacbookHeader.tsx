@@ -54,7 +54,7 @@ const MacbookHeader: React.FC = () => {
         <div className="nav-go">Go</div>
         <div className="nav-window">Windows</div>
         <div className="nav-help">Help</div>
-        <div className="noway">응 어짜피 안돼</div>
+        <div className="noway">응 눌러봤자 안돼</div>
       </div>
       <div className="navbar-right">
         <div className="macbook-battery">

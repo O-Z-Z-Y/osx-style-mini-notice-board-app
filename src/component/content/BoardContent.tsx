@@ -31,12 +31,14 @@ const Container = styled.div`
 
 const contents = [
   {
+    id:0,
     subject: "공지",
     username: "영자",
     date: "2023-03-18",
     text: "바른 말, 고운 말 써주세요 험한 말은 동의없이 삭제 될 수 있습니다.",
   },
   {
+    id:1,
     subject: "게시글1",
     username: "ㅇㅇ",
     date: "2023-03-22",
@@ -50,7 +52,7 @@ const BoardContent: React.FC = () => {
     <Container>
         <h2 className="text-2xl font-bold mb-4">게시판</h2>
         {contents.map((content) => (
-          <div className="content-wrapper bg-white rounded-md shadow-md hover:shadow-lg ease-linear duration-100">
+          <div className="content-wrapper" key={content.id}>
             <div className="p-4 m-4">
               <div className="content-title-wrapper">
                 <h2 className="text-lg font-semibold mb-2">{content.subject}</h2>
