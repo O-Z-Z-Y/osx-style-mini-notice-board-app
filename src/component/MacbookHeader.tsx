@@ -13,15 +13,14 @@ const Container = styled.div`
   align-items: center;
   color: rgba(255,255,255,0.9);
   background-color: rgba(0,0,0,0.5);
+  
 
   .nav-finder {
     font-weight: 600;
   }
-
   > div {
     padding: 0 5px;
     display: flex;
-
     > div {
       padding: 0 5px;
       cursor: default;
@@ -54,7 +53,7 @@ const MacbookHeader: React.FC = () => {
         <div className="nav-go">Go</div>
         <div className="nav-window">Windows</div>
         <div className="nav-help">Help</div>
-        <div className="noway">응 눌러봤자 안돼</div>
+        <div className="noway">메뉴 바는 아직</div>
       </div>
       <div className="navbar-right">
         <div className="macbook-battery">
@@ -66,8 +65,7 @@ const MacbookHeader: React.FC = () => {
         <div className="macbook-search">
           <SearchIcon />
         </div>
-        <div className="macbook-siri">siri</div>
-        <div className="macbook-time">[현재 시간]</div>
+        <div className="macbook-time">[x월 xx일 (월) 오후 xx:xx]</div>
       </div>
     </Container>
   )

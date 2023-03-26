@@ -8,9 +8,9 @@ import MacbookHeader from "./MacbookHeader";
 const Container = styled.div`
   height: 100vh;
   background-image: url(./wallpaper.jpg);
-  background-size: auto 100vh;
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center 25%;
   overflow-x: hidden;
   font-family: 'San Francisco';
   user-select: none;
@@ -78,8 +78,6 @@ const Container = styled.div`
     }
   }
 `;
-
-
 
 const Macbook: React.FC = () => {
   const fileWrapper = useRef<HTMLDivElement>(null);

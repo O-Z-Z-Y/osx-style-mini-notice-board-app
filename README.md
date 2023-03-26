@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# MAC-OS 스타일의 게시판 웹앱
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### macOS를 사용하는 듯한 UX/UI를 기반으로 게시판 웹앱을 만드는 리포지토리
+#
+SEO가 크게 중요하지 않은, SPA(Single Page Application)을 제작 할 예정이라 React에 Typescript를 채택하였습니다.  
 
-## Available Scripts
+스타일링은 Styled-components와 TailwindCss 두 가지를 고민해보았는데, Tailwind가 굉장히 간편하면서도 반응형이라는 장점이 있지만, 클래스명이 길어진다는 단점이 있습니다. 그래서 코드가 길어지더라도 기능 구현 부분에서 스타일링을 따로 분리해 가독성을 높이기 위해 Styled-components를 채택하였습니다.
 
-In the project directory, you can run:
+백엔드 작업은 firebase를 연동시킬 예정이고, 게시판은 익명으로도 글을 작성 할 수 있지만, 회원은 등급을 부여하고, 게시글에 특별한 스타일링을 적용할 예정입니다.
 
-### `npm start`
+#
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+어플리케이션 창은 react portal로 모달창 형식으로 구현했으며, Drag-and-Drop으로 위치를 옮길 수 있게 해서 실제 앱을 실행하는듯한 UX를 만들었습니다. (resize도 구현 예정)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+(참조: <https://bepyan.github.io/blog/dnd-master/1-drag-event> )
 
-### `npm test`
+Drag 이벤트는 drag 특성 상, 너무 잦은 리렌더링이 일어나 리소스가 낭비되어 렉이 발생하므로,
+lodash의 throttle을 이용하여 통상적으로 사용하는 모니터 60hz 주사율에 맞춰 값을 받아오도록 최적화하였습니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+const [{ x, y }, setPosition] = useState({
+  x: 0,
+  y: 0,
+});
 
-### `npm run build`
+const inrange = (v: number, min: number, max: number) => {
+  if (v < min) return min;
+  if (v > max) return max;
+  return v;
+};
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const modalPositionHandler = (clickEvent: React.MouseEvent<Element, MouseEvent>) => {
+  const mouseMoveHandler = throttle((moveEvent: MouseEvent) => {
+    const deltaX = moveEvent.screenX - clickEvent.screenX;
+    const deltaY = moveEvent.screenY - clickEvent.screenY;
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    const browser = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    }
+    const app = appRef.current?.getBoundingClientRect()
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    setPosition({
+      x: inrange(
+        x + deltaX,
+        Math.floor((-browser.width + app!.width) / 2),
+        Math.floor((browser.width - app!.width) / 2),
+      ),
+      y: inrange(
+        y + deltaY,
+        // 메뉴 바를 제외한 높이
+        Math.floor((-browser.height + app!.height + 25) / 2),
+        Math.floor((browser.height - app!.height - 25) / 2),
+      )
+    });
+  }, 16); // 60fps
 
-### `npm run eject`
+  const mouseUpHandler = () => {
+    document.removeEventListener('mousemove', mouseMoveHandler);
+  };
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mouseup', mouseUpHandler, { once: true });
+}
+```
