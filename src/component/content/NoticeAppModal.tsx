@@ -26,7 +26,6 @@ const Container = styled.div<StyleProps>`
     `
   }
 
-
   .page-header {
     display: flex;
     justify-content: space-between;

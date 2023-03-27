@@ -3,6 +3,7 @@ import { ReactComponent as AppleLogoIcon } from './../assets/svg/apple.svg'
 import { ReactComponent as BatteryIcon} from './../assets/svg/battery-charging.svg'
 import { ReactComponent as SearchIcon} from './../assets/svg/search.svg'
 import { ReactComponent as WifiIcon} from './../assets/svg/wifi-off.svg'
+import CurrentTime from './CurrentTime';
 
 const Container = styled.div`
   height: 25px;
@@ -40,6 +41,7 @@ const Container = styled.div`
 `
 
 const MacbookHeader: React.FC = () => {
+
   return (
     <Container>
       <div className="navbar-left">
@@ -53,7 +55,7 @@ const MacbookHeader: React.FC = () => {
         <div className="nav-go">Go</div>
         <div className="nav-window">Windows</div>
         <div className="nav-help">Help</div>
-        <div className="noway">메뉴 바는 아직</div>
+        <div className="noway">응 미구현</div>
       </div>
       <div className="navbar-right">
         <div className="macbook-battery">
@@ -65,7 +67,7 @@ const MacbookHeader: React.FC = () => {
         <div className="macbook-search">
           <SearchIcon />
         </div>
-        <div className="macbook-time">[x월 xx일 (월) 오후 xx:xx]</div>
+        <CurrentTime />
       </div>
     </Container>
   )
