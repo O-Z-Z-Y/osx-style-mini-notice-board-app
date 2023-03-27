@@ -20,9 +20,56 @@ macOS를 지향하고 있지만, 모바일 환경에서의 유저 경험은 상�
 
 어플리케이션 창은 react portal로 모달창 형식으로 구현했으며, Drag-and-Drop으로 위치를 옮길 수 있게 해서 실제 앱을 실행하는듯한 UX를 만들었습니다. (resize도 구현 예정)
 
->참조: https://bepyan.github.io/blog/dnd-master/1-drag-event
+### React Portal을 활용한 모달 창은 재사용을 위해 Custom Hook으로 만들어 관리하였습니다.
 
-Drag 이벤트는 drag 특성 상, 너무 잦은 리렌더링이 일어나 리소스가 낭비되므로,
+```
+const useModal = () => {
+  const [modalOpened, setModalOpened] = useState(false);
+
+  const openModal = () => {
+    setModalOpened(true);
+  };
+
+  const closeModal = () => {
+    setModalOpened(false);
+  };
+
+  interface IProps {
+    children: React.ReactNode;
+  }
+
+  const ModalPortal: React.FC<IProps> = ({ children }) => {
+    const ref = useRef<Element | null>();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+      setMounted(true);
+      if (document) {
+        const dom = document.querySelector("#root-modal");
+        ref.current = dom;
+      }
+    }, []);
+    
+    if (ref.current && mounted && modalOpened) {
+      return createPortal(
+        <Container mounted={mounted}>
+          {children}
+        </Container>,
+        ref.current
+      );
+    }
+    return null;
+  };
+
+  return {
+    openModal,
+    closeModal,
+    ModalPortal,
+  };
+};
+```
+
+Drag 이벤트는 이 블로그(https://bepyan.github.io/blog/dnd-master/1-drag-event)를 참조하였으며 drag 특성 상, 너무 잦은 리렌더링이 일어나 리소스가 낭비되므로,
 
 lodash의 throttle을 이용하여 통상적으로 사용하는 모니터 60hz 주사율에 맞춰 값을 받아오도록 최적화 하였습니다.
 
