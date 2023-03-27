@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useRef } from 'react';
 import useModal from "../hooks/useModal";
-import NoticeAppModal from "./content/NoticeAppModal";
+import NoticeAppModal from "./notice-content/NoticeAppModal";
 import MacbookHeader from "./MacbookHeader";
 
 const Container = styled.div`

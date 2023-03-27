@@ -3,7 +3,7 @@ import { ReactComponent as AppleLogoIcon } from './../assets/svg/apple.svg'
 import { ReactComponent as BatteryIcon} from './../assets/svg/battery-charging.svg'
 import { ReactComponent as SearchIcon} from './../assets/svg/search.svg'
 import { ReactComponent as WifiIcon} from './../assets/svg/wifi-off.svg'
-import CurrentTime from './CurrentTime';
+import CurrentTime from './macbook-content/CurrentTime';
 
 const Container = styled.div`
   height: 25px;

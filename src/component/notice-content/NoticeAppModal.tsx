@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import BoardContent from "./BoardContent";
 import throttle from 'lodash/throttle';
 import { useRef } from 'react';
+import SignalLightButton from "../macbook-content/SignalLightButton";
 
 interface StyleProps {
   isMaximized?: boolean;
@@ -34,23 +35,6 @@ const Container = styled.div<StyleProps>`
     background-color: white;
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(231,231,231,1) 55%, rgba(198,198,198,1) 100%);
 
-    .button-wrapper {
-      padding-top: 3px;
-      margin-left: 10px;
-      display: flex;
-      align-items: center;
-      > div {
-        padding-right: 8px;
-        cursor: not-allowed;
-      }
-      .close-button {
-        cursor: pointer !important;
-      }
-      .green-button {
-        cursor: pointer !important
-      }
-    }
-
     .app-title {
       padding-top: 5px;
       margin-right: 45%;
@@ -66,7 +50,6 @@ interface IProps {
 const NoticeAppModal: React.FC<IProps> = ({ closeModal }) => {
   const [isMaximized, setIsMaximized] = useState(false)
   const appRef = useRef<HTMLDivElement>(null);
-
 
   const maximizeModal = () => {
     setIsMaximized(!isMaximized)
@@ -116,27 +99,12 @@ const NoticeAppModal: React.FC<IProps> = ({ closeModal }) => {
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler, { once: true });
   }
-  
+
+
   return (
     <Container isMaximized={isMaximized} positionX={x} positionY={y} ref={appRef}>
       <div className="page-header" onMouseDown={modalPositionHandler} onDoubleClick={maximizeModal}>
-        <div className="button-wrapper">
-          <div className="close-button" title="창 닫기" onClick={closeModal}>
-            <svg width="20" height="20">
-              <circle cx="10" cy="10" r="10" fill="#FF605C" />
-            </svg>
-          </div>
-          <div className="yellow-button" title="최소화">
-            <svg width="20" height="20">
-              <circle cx="10" cy="10" r="10" fill="#FFBD44" />
-            </svg>
-          </div>
-          <div className="green-button" title="최대화" onClick={maximizeModal}>
-            <svg width="20" height="20">
-              <circle cx="10" cy="10" r="10" fill="#00CA4E" />
-            </svg>
-          </div>
-        </div>
+        <SignalLightButton closeModal={closeModal} maximizeModal={maximizeModal}/>
         <div className="app-title">Notice App</div>
       </div>
       <BoardContent />

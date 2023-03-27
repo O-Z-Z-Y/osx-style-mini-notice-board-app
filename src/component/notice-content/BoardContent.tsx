@@ -50,16 +50,14 @@ const contents = [
 const BoardContent: React.FC = () => {
   return (
     <Container>
-        <h2 className="text-2xl font-bold mb-4">게시판</h2>
+        <h2 className="notice-board-title">게시판</h2>
         {contents.map((content) => (
           <div className="content-wrapper" key={content.id}>
-            <div className="p-4 m-4">
-              <div className="content-title-wrapper">
-                <h2 className="text-lg font-semibold mb-2">{content.subject}</h2>
-                <p className="text-gray-500 text-sm mb-2">{content.username} | {content.date}</p>
-              </div>
-              <p className="content-text">{content.text}</p>
+            <div className="content-title-wrapper">
+              <h2 className="content-subject">{content.subject}</h2>
+              <p className="content-name-date">{content.username} | {content.date}</p>
             </div>
+            <p className="content-text">{content.text}</p>
           </div>
         ))}
     </Container>
