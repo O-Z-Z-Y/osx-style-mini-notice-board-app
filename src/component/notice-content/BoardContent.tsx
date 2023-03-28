@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import WriteContent from './WriteContent';
 
 const Container = styled.div`
   margin:15px;
@@ -77,13 +78,14 @@ const contents: Content[] = [
 
 const BoardContent: React.FC = () => {
   const [filter, setFilter] = useState('all');
+  const [writingMode, setWritingMode] = useState(false);
 
   const filterCategory = (category: string) => {
+    setWritingMode(false);
     setFilter(category);
   };
 
   const filteredContents = filter === 'all' ? contents : contents.filter((content) => content.category === filter);
-
 
   return (
     <Container>
@@ -94,20 +96,24 @@ const BoardContent: React.FC = () => {
             <button onClick={() => filterCategory('notice')}>공지</button>
           </div>
           <div className="crud-button">
-            <button>글쓰기</button>
+            <button onClick={() => setWritingMode(true)}>글쓰기</button>
           </div>
         </div>
-        <div className="board-contents">
-          {filteredContents.map((content) => (
-            <div className="content-wrapper" key={content.id}>
-              <div className="content-title-wrapper">
-                <h2 className="content-subject">{content.subject}</h2>
-                <p className="content-name-date">{content.username} | {content.date}</p>
-              </div>
-              <p className="content-text">{content.text}</p>
+        {writingMode
+          ? <WriteContent />
+          : <div className="board-contents">
+              {filteredContents.map((content) => (
+                <div className="content-wrapper" key={content.id}>
+                  <div className="content-title-wrapper">
+                    <h2 className="content-subject">{content.subject}</h2>
+                    <p className="content-name-date">{content.username} | {content.date}</p>
+                  </div>
+                  <p className="content-text">{content.text}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+
+        }
     </Container>
   )
 }
