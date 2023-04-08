@@ -1,12 +1,17 @@
 import Macbook from "./component/Macbook";
 import "./App.css"
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function App() {
   return (
-    <div className="App">
-      <Macbook></Macbook>
-      <div id="root-modal" />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Macbook></Macbook>
+        <div id="root-modal" />
+      </div>
+    </Provider>
   );
 }
 

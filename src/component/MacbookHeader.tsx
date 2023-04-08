@@ -30,7 +30,7 @@ const Container = styled.div`
   
   .navbar-right {
     display: flex;
-    align-items: center;
+    align-items: center;a
     div {
       padding: 0 8px;
       svg {

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import { useRef } from 'react';
 import useModal from "../hooks/useModal";
 import NoticeAppModal from "./notice-content/NoticeAppModal";
 import MacbookHeader from "./MacbookHeader";
+import FileButton from "./common/FileButton";
+import { useDispatch } from "react-redux";
+import { useSelector } from "../store";
+import TestApp from "./test-app/TestApp";
 
 const Container = styled.div`
   height: 100vh;
@@ -25,86 +28,32 @@ const Container = styled.div`
       width: auto;
     }
   }
-
-  .notice-app-wrapper {
-    width: 100px;
-    height: 130px;
-    position: relative;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    justify-items: center;
-    align-items: center;
-    color: white;
-    
-    .notice-icon-wrapper {
-      width: 95px;
-      height: 95px;
-      margin-bottom: 5px;
-      text-align: center;
-      border: 2px solid rgba(0,0,0,0);
-      border-radius: 5px;
-      img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    p {
-      margin: 0 5px;
-      padding: 0 5px 5px 5px;
-      border-radius: 5px;
-      text-align: center;
-    }
-    &:hover {
-      cursor: pointer;
-      .notice-icon-wrapper {
-        border: 2px solid gray;
-        background-color: rgba(40, 42, 58, 0.8);
-      }
-      p {
-        background-color: rgba(0, 35, 91, 0.75);
-      }
-    }
-    &:focus {
-      cursor: pointer;
-      .notice-icon-wrapper {
-        border: 2px solid gray;
-        background-color: rgba(40, 42, 58, 0.8);
-      }
-      p {
-        background-color: rgba(0, 35, 91, 0.75);
-      }
-    }
-  }
 `;
 
 const Macbook: React.FC = () => {
-  const fileWrapper = useRef<HTMLDivElement>(null);
   const { openModal, closeModal, ModalPortal } = useModal();
+  const selectedFile = useSelector((state) => state.file.selectedFile)
 
-  const handleClick = () => {
-    fileWrapper.current?.focus();
+  const currentModal = () => {
+    switch (selectedFile) {
+      case 'Notice App':
+        return <NoticeAppModal closeModal={closeModal} />;
+      case 'Test App':
+        return <TestApp closeModal={closeModal} />;
+      default:
+        return null;
+    }
   };
 
   return (
     <Container>
       <MacbookHeader />
-      <div
-        className="notice-app-wrapper" 
-        onDoubleClick={() => openModal()}
-        ref={fileWrapper} 
-        onClick={handleClick}
-        tabIndex={0}>
-        <div className="notice-icon-wrapper">
-          <img src="./notice-icon.png" alt="" />
-        </div>
-        <p className="notice-app-name">Notice App</p>
-      </div>
+      <FileButton fileName="Notice App" fileIcon="./notice-icon.png" openModal={openModal} />
+      <FileButton fileName="Test App" fileIcon="./test-icon.png" openModal={openModal} />
       <ModalPortal>
-        <NoticeAppModal closeModal={closeModal} />
+        {currentModal()}
       </ModalPortal>
     </Container>
   )
 };
-export default Macbook; 
+export default Macbook;
