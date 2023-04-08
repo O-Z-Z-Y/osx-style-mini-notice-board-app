@@ -78,10 +78,10 @@ const contents: Content[] = [
 
 const BoardContent: React.FC = () => {
   const [filter, setFilter] = useState('all');
-  const [writingMode, setWritingMode] = useState(false);
+  const [isWriting, setIsWriting] = useState(false);
 
   const filterCategory = (category: string) => {
-    setWritingMode(false);
+    setIsWriting(false);
     setFilter(category);
   };
 
@@ -96,10 +96,13 @@ const BoardContent: React.FC = () => {
             <button onClick={() => filterCategory('notice')}>공지</button>
           </div>
           <div className="crud-button">
-            <button onClick={() => setWritingMode(true)}>글쓰기</button>
+            {isWriting
+              ? <button onClick={() => setIsWriting(false)}>목록</button>
+              : <button onClick={() => setIsWriting(true)}>글쓰기</button>
+            }
           </div>
         </div>
-        {writingMode
+        {isWriting
           ? <WriteContent />
           : <div className="board-contents">
               {filteredContents.map((content) => (

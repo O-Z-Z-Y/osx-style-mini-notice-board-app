@@ -34,6 +34,7 @@ const Macbook: React.FC = () => {
   const { openModal, closeModal, ModalPortal } = useModal();
   const selectedFile = useSelector((state) => state.file.selectedFile)
 
+  //* 선택한 파일을 실행
   const currentModal = () => {
     switch (selectedFile) {
       case 'Notice App':

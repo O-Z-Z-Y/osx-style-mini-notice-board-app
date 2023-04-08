@@ -1,6 +1,5 @@
 import React, { useRef } from "react"
 import styled from "styled-components"
-import { useSelector } from "../../store";
 import { useDispatch } from "react-redux";
 import { fileActions } from "../../store/file";
 
@@ -54,7 +53,6 @@ const Container = styled.div`
       background-color: rgba(0, 35, 91, 0.75);
     }
   }
-  
 `
 
 interface IProps {
