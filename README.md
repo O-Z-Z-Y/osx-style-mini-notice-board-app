@@ -69,7 +69,7 @@ const useModal = () => {
 };
 ```
 
-Drag 이벤트는 이 블로그(https://bepyan.github.io/blog/dnd-master/1-drag-event)를 참조하였으며 drag 특성 상, 너무 잦은 리렌더링이 일어나 리소스가 낭비되므로,
+Drag 이벤트는 이 블로그(https://bepyan.github.io/blog/dnd-master/1-drag-event) 를 참조하였으며 drag 특성 상, 너무 잦은 리렌더링이 일어나 리소스가 낭비되므로,
 
 lodash의 throttle을 이용하여 통상적으로 사용하는 모니터 60hz 주사율에 맞춰 값을 받아오도록 최적화 하였습니다.
 
