@@ -1,6 +1,8 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useState } from 'react';
+import { firestore } from "../../service/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 const Container = styled.div`
   margin-top: 15px;
@@ -50,19 +52,29 @@ const Container = styled.div`
 `
 const WriteContent: React.FC = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [text, setText] = useState("");
   const dispatch = useDispatch();
 
-  const onSubmitPost = (e: any) => {
+
+  const onSubmitPost = async (e: any) => {
     e.preventDefault();
-    const post = {
-      title,
-      content,
-      createAt: new Date(),
-    };
-    // TODO:여기 디스패치 넣어야함
-    setTitle("");
-    setContent("");
+    try {
+      console.log('제목 : ', title);
+      console.log('내용 : ', text);
+      console.log('작성일 : ', new Date());
+      // TODO:여기 디스패치 넣어야함
+      const docRef = await addDoc(collection(firestore, "contents"), {
+        title: title,
+        text: text,
+        createAt: new Date(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+      setTitle("");
+      setText("");
+    } catch (error) {
+      console.error('Error message:', error);
+    }
+    
   }
   return (
     <Container>
@@ -82,12 +94,11 @@ const WriteContent: React.FC = () => {
         <div className="post-content">
           <label htmlFor="content">내용</label>
           <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            id="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
         </div>
-        
       </form>
     </Container>
   );

@@ -1,10 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import useModal from "../hooks/useModal";
 import NoticeAppModal from "./notice-content/NoticeAppModal";
 import MacbookHeader from "./MacbookHeader";
 import FileButton from "./common/FileButton";
-import { useDispatch } from "react-redux";
 import { useSelector } from "../store";
 import TestApp from "./test-app/TestApp";
 
@@ -34,7 +33,7 @@ const Macbook: React.FC = () => {
   const { openModal, closeModal, ModalPortal } = useModal();
   const selectedFile = useSelector((state) => state.file.selectedFile)
 
-  //* 선택한 파일을 실행
+  //* 선택한 파일에 따른 모달셀렉터
   const currentModal = () => {
     switch (selectedFile) {
       case 'Notice App':

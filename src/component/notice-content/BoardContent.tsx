@@ -1,11 +1,15 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import WriteContent from './WriteContent';
+import { firestore } from '../../service/firebase';
+import { Timestamp, collection, onSnapshot, query } from 'firebase/firestore';
 
 const Container = styled.div`
   margin:15px;
-  max-width: 1024px;
+  max-height:650px;
   padding: 0 1rem;
+  overflow: scroll;
+  overflow-x: hidden;
 
   h2 {
     font-size: 1.5rem;
@@ -29,6 +33,7 @@ const Container = styled.div`
 
   .board-contents {
     margin-top: 15px;
+    height: 100%;
 
     .content-wrapper {
       background-color: white;
@@ -48,44 +53,51 @@ const Container = styled.div`
     }
   }
 `
-
-interface Content {
-  id: number;
-  subject: string;
-  username: string;
-  date: string;
+interface ContentProps {
+  id: string;
+  title: string;
+  createAt: string;
   text: string;
-  category?: string | 'all';
+  userName: string;
 }
-
-const contents: Content[] = [
-  {
-    id:0,
-    subject: "공지",
-    username: "영자",
-    date: "2023-03-18",
-    text: "바른 말, 고운 말 써주세요 험한 말은 동의없이 삭제 될 수 있습니다.",
-    category: "notice"
-  },
-  {
-    id:1,
-    subject: "게시글1",
-    username: "ㅇㅇ",
-    date: "2023-03-22",
-    text: "1빠"
-  }
-]
 
 const BoardContent: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const [isWriting, setIsWriting] = useState(false);
+  const [contents, setContents] = useState<ContentProps[]>([]);
+
+  useEffect(() => {
+    const getContents = async () => {
+      const q = query(collection(firestore, "contents"))
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const data: ContentProps[] = snapshot.docs.map(doc => ({
+          id: doc.id,
+          title: doc.data().title,
+          createAt: convertTimestamp(doc.data().createAt),
+          text: doc.data().text,
+          userName: doc.data().userName ?? "ㅇㅇ",
+        }));
+        setContents(data);
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    };
+    getContents();
+  }, [])
 
   const filterCategory = (category: string) => {
     setIsWriting(false);
     setFilter(category);
   };
 
-  const filteredContents = filter === 'all' ? contents : contents.filter((content) => content.category === filter);
+  const convertTimestamp = (date: string | Timestamp) => {
+    return date instanceof Timestamp
+      ? date.toDate().toLocaleDateString()
+      : date
+  }
 
   return (
     <Container>
@@ -105,11 +117,11 @@ const BoardContent: React.FC = () => {
         {isWriting
           ? <WriteContent />
           : <div className="board-contents">
-              {filteredContents.map((content) => (
+              {contents.map((content) => (
                 <div className="content-wrapper" key={content.id}>
                   <div className="content-title-wrapper">
-                    <h2 className="content-subject">{content.subject}</h2>
-                    <p className="content-name-date">{content.username} | {content.date}</p>
+                    <h2 className="content-title">{content.title}</h2>
+                    <p className="content-name-date">{content.userName} | {content.createAt}</p>
                   </div>
                   <p className="content-text">{content.text}</p>
                 </div>
