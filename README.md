@@ -6,6 +6,8 @@
 
 :two:게시판 페이지도 자기의 역할(CRUD)에 충실 하도록 할 것
 
+:three:익명으로도 글을 작성할 수 있으나, 회원은 특별한 디자인 요소를 제공 할 것
+
 #
 
 SEO가 크게 중요하지 않은, SPA(Single Page Application)을 제작 할 예정이라 React에 에러를 최소화하기 위한 Typescript를 채택하였습니다.
