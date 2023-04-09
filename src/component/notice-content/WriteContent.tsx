@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useState } from 'react';
 import { firestore } from "../../service/firebase";
@@ -53,7 +52,6 @@ const Container = styled.div`
 const WriteContent: React.FC = () => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const dispatch = useDispatch();
 
 
   const onSubmitPost = async (e: any) => {
@@ -62,7 +60,6 @@ const WriteContent: React.FC = () => {
       console.log('제목 : ', title);
       console.log('내용 : ', text);
       console.log('작성일 : ', new Date());
-      // TODO:여기 디스패치 넣어야함
       const docRef = await addDoc(collection(firestore, "contents"), {
         title: title,
         text: text,
